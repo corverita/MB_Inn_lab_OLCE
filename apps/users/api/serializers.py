@@ -6,7 +6,7 @@ import re
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('email', 'nombre', 'apellido_paterno', 'apellido_materno', 'edad', 'telefono', 'is_staff', 'is_active')
+        fields = ('id','email', 'nombre', 'apellido_paterno', 'apellido_materno', 'edad', 'telefono', 'is_staff', 'is_active')
 
 class CrearCustomUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,6 +18,19 @@ class CrearCustomUserSerializer(serializers.ModelSerializer):
         user = CustomUser.objects.create_user(**validated_data)
         return user
     
+    def validate_telefono(self, value):
+        if len(value) != 10:
+            raise serializers.ValidationError("El teléfono debe tener 10 dígitos")
+        regex = r'^[0-9]*$'
+        if not re.match(regex, value):
+            raise serializers.ValidationError("El teléfono debe contener solo números")
+        return value
+
+class ActualizarCustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('email', 'nombre', 'apellido_paterno', 'apellido_materno', 'edad', 'telefono')
+
     def update(self, instance, validated_data):
         instance.email = validated_data.get('email', instance.email)
         instance.nombre = validated_data.get('nombre', instance.nombre)
@@ -25,9 +38,6 @@ class CrearCustomUserSerializer(serializers.ModelSerializer):
         instance.apellido_materno = validated_data.get('apellido_materno', instance.apellido_materno)
         instance.edad = validated_data.get('edad', instance.edad)
         instance.telefono = validated_data.get('telefono', instance.telefono)
-        instance.is_staff = validated_data.get('is_staff', instance.is_staff)
-        instance.is_active = validated_data.get('is_active', instance.is_active)
-        instance.set_password(validated_data.get('password'))
         instance.save()
         return instance
     

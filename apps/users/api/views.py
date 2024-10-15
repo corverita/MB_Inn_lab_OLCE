@@ -27,8 +27,10 @@ class CustomUserViewSet(ModelViewSet):
     pagination_class = Paginador
 
     def get_serializer_class(self):
-        if self.action in ['create', 'update']:
+        if self.action == 'create':
             return CrearCustomUserSerializer
+        if self.action == 'update':
+            return ActualizarCustomUserSerializer
         if self.action == 'destroy':
             return EliminarCustomUserSerializer
         if self.action == 'usuarios_ordenados_edad':
@@ -43,7 +45,7 @@ class CustomUserViewSet(ModelViewSet):
     @action(detail=False, methods=['get'])
     def usuarios_ordenados_edad(self, request):
         queryset = self.get_queryset()
-        ascendant = request.query_params.get('ascendant', None)
+        ascendant = request.query_params.get('ascendant')
         queryset = QuerysetSorter.bubble_sort(queryset, "edad", ascendant=ascendant)
 
         page = self.paginate_queryset(queryset)
