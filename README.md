@@ -43,3 +43,11 @@ Crearemos un superusuario para realizar las consultas en swagger posteriormente
 python manage.py createsuperuser
 
 Ingresaremos nuestro correo y una contraseña, evitando que el correo sea duplicado pues es un campo unique.
+
+También ejecutaremos el comando collectstatic, para poder tener todos los archivos estáticos del proyecto
+
+python manage.py collectstatic
+
+Tras esto ya podemos ejecutar el proyecto
+
+python manage.py runserver
