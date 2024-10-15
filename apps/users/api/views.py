@@ -25,6 +25,7 @@ class CustomUserViewSet(ModelViewSet):
     search_fields = ['email', 'nombre', 'apellido_paterno', 'apellido_materno', 'edad', 'telefono', 'is_staff', 'is_active']
     ordering_fields = ['email', 'nombre', 'apellido_paterno', 'apellido_materno', 'edad', 'telefono', 'is_staff', 'is_active']
     filter_fields = ['email', 'nombre', 'apellido_paterno', 'apellido_materno', 'edad', 'telefono', 'is_staff', 'is_active']
+    filterset_fields = ['email', 'nombre', 'apellido_paterno', 'apellido_materno', 'edad', 'telefono', 'is_staff', 'is_active']
     pagination_class = Paginador
 
     def get_serializer_class(self):
