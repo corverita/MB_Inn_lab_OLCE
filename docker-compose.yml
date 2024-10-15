@@ -1,0 +1,15 @@
+volumes:
+  local_postgres_data: {}
+
+services:
+  db:
+    image: postgres:15
+    container_name: inn_lab_db
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=lab
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    restart: on-failure
