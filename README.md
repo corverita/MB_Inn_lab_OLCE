@@ -18,9 +18,14 @@ Ya que creamos el ambiente, entonces podemos proseguir y usarlo
 source env/Scripts/activate
 
 También habrá que modificar nuestras variables de entorno (.env-example) para tener nuestros puertos y otras configuraciones funcionando.
+
+Tras modificar las variables de entorno de nuestro archivo, habrá que RENOMBRARLO a .env para que este sea reconocido al momento de arrancar el proyecto.
+
 Para leer y tener en cuenta las variables de entorno al ejecutar el proyecto, ejecutaremos el siguiente comando
 
-source .env-example
+source .env
+
+Si esto llegara a dar algún error, tener en cuenta que se mencionó anteriormente sobre el renombre del mismo archivo.
 
 Con esto se cargarán las variables y podremos tener toda nuestra configuración de conexión y de autenticación/autorización para las bases de datos.
 
