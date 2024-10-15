@@ -58,5 +58,8 @@ class EliminarCustomUserSerializer(serializers.ModelSerializer):
         instance.delete()
         return instance
 
-class OrdenarUsuariosEdad(serializers.Serializer):
+class OrdenarUsuarios(serializers.Serializer):
     ascendant = serializers.BooleanField()
+
+class EmptySerializer(serializers.Serializer):
+    pass

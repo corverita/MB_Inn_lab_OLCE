@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'drf_yasg',
+    'xhtml2pdf',
 ]
 
 MIDDLEWARE = [

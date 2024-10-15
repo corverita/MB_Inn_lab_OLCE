@@ -2,15 +2,16 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.exceptions import NotFound
 from rest_framework.decorators import action
 
 from django_filters.rest_framework import DjangoFilterBackend
-from django.core.exceptions import ObjectDoesNotExist
-from django.http import Http404
+from django.template.loader import render_to_string
+from django.http import HttpResponse
 
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+
+from xhtml2pdf import pisa
 
 from ..models import *
 from .pagination import Paginador
@@ -34,7 +35,11 @@ class CustomUserViewSet(ModelViewSet):
         if self.action == 'destroy':
             return EliminarCustomUserSerializer
         if self.action == 'usuarios_ordenados_edad':
-            return OrdenarUsuariosEdad
+            return OrdenarUsuarios
+        if self.action == 'usuarios_ordenados_apellido':
+            return OrdenarUsuarios
+        if self.action == 'generar_pdf':
+            return EmptySerializer
         return CustomUserSerializer
     
     @swagger_auto_schema(
@@ -75,3 +80,22 @@ class CustomUserViewSet(ModelViewSet):
 
         serializer = CustomUserSerializer(queryset, many=True)
         return Response(serializer.data)
+    
+    @action(detail=False, methods=['post'])
+    def generar_pdf(self, request):
+        queryset = self.get_queryset()
+        # Renderizar el HTML
+        html_string = render_to_string('listado.html', {'usuarios': queryset})
+
+        # Crear un objeto HTTP de respuesta
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="usuarios.pdf"'
+
+        # Convertir HTML a PDF
+        pisa_status = pisa.CreatePDF(html_string, dest=response)
+
+        # Retornar el PDF o un error
+        if pisa_status.err:
+            return Response('Error al generar el PDF', status=400)
+
+        return response
