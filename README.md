@@ -25,7 +25,21 @@ pip install -r requirements.txt
 
 # Ejecución del proyecto
 
-Para este caso en particular, tendremos un docker-compose y un Dockerfile, que ya nos facilitarán un poco la ejecución del proyecto y de la base de datos requerida.
+Para este caso en particular, tendremos un docker-compose para crear nuestra base de datos, que ya nos facilitará un poco la ejecución del proyecto.
 Entonces ejecutamos el siguiente comando
 
 docker-compose up -d
+
+Al tener la bd creada, entonces crearemos migraciones del proyecto con el siguiente comando
+
+python manage.py makemigrations
+
+Y aplicaremos estas sobre la bd, para poder registrar nuestras tablas con base a los modelos reconocidos
+
+python manage.py migrate
+
+Crearemos un superusuario para realizar las consultas en swagger posteriormente
+
+python manage.py createsuperuser
+
+Ingresaremos nuestro correo y una contraseña, evitando que el correo sea duplicado pues es un campo unique.
